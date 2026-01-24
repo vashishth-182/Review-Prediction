@@ -2,6 +2,7 @@ import streamlit as st
 from tensorflow.keras.datasets import imdb
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import sequence
+import streamlit.components.v1 as components
 
 word_index = imdb.get_word_index()
 word_to_id = {k: (v + 3) for k, v in word_index.items()}
@@ -28,6 +29,15 @@ try:
 except Exception as e:
     st.error(f"Error loading model: {e}")
     st.stop()
+
+# Inject Vercel Speed Insights
+speed_insights_script = """
+<script>
+    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+"""
+components.html(speed_insights_script, height=0)
 
 # apapdu streamlit 
 
