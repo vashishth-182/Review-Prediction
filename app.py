@@ -1,16 +1,25 @@
+import re
+import json
 import streamlit as st
-from tensorflow.keras.datasets import imdb
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import sequence
 
-word_index = imdb.get_word_index()
-word_to_id = {k: (v + 3) for k, v in word_index.items()}
-word_to_id["<PAD>"] = 0
-word_to_id["<START>"] = 1
-word_to_id["<UNK>"] = 2
-word_to_id["<UNUSED>"] = 3
+@st.cache_data
+def load_word_index():
+    with open("imdb_word_index.json", "r") as f:
+        word_index = json.load(f)
+    word_to_id = {k: (v + 3) for k, v in word_index.items()}
+    word_to_id["<PAD>"] = 0
+    word_to_id["<START>"] = 1
+    word_to_id["<UNK>"] = 2
+    word_to_id["<UNUSED>"] = 3
+    return word_to_id
+
+word_to_id = load_word_index()
 
 def preprocess_text(text, maxlen=500):
+    # Remove punctuation so 'movie!' doesn't become 'movie!' (which isn't in vocab)
+    text = re.sub(r'[^\w\s]', '', text)
     words = text.lower().split()
     seq = []
 
@@ -23,8 +32,13 @@ def preprocess_text(text, maxlen=500):
     return sequence.pad_sequences([seq], maxlen=maxlen)
 
 
+@st.cache_resource
+def get_model():
+    # Cache completely cleared to load the official Keras 3 model.
+    return load_model("lstm_model.keras")
+
 try:
-    model = load_model("lstm_model.h5") 
+    model = get_model() 
 except Exception as e:
     st.error(f"Error loading model: {e}")
     st.stop()
