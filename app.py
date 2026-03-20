@@ -35,13 +35,19 @@ def preprocess_text(text, maxlen=500):
 
 @st.cache_resource
 def get_model():
-    # Cache completely cleared to load the official Keras 3 model.
-    return load_model("lstm_model.keras")
+    # Use the legacy HDF5 format (.h5) which is compatible with Keras 2.x / TF 2.15
+    # (The .keras format requires Keras 3.x and is NOT backward-compatible)
+    try:
+        return load_model("lstm_model.h5")
+    except Exception:
+        # Fallback: try the .keras file without recompiling (skips optimizer state)
+        return load_model("lstm_model.keras", compile=False)
 
 try:
-    model = get_model() 
+    model = get_model()
 except Exception as e:
-    st.error(f"Error loading model: {e}")
+    st.error(f"❌ Error loading model: {e}")
+    st.info("💡 Tip: Make sure `lstm_model.h5` exists. Run `train_model.py` to regenerate it.")
     st.stop()
 
 # Initialize session state for review history

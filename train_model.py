@@ -32,5 +32,5 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 model.fit(x_train, y_train, epochs=3, batch_size=64, validation_split=0.2)
 
 
-model.save("lstm_model.keras")
-print("✅ Model saved as lstm_model.keras")
+model.save("lstm_model.h5")
+print("✅ Model saved as lstm_model.h5 (Keras 2 / TF 2.15 compatible HDF5 format)")
