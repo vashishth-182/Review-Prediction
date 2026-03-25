@@ -1,20 +1,35 @@
-# 🧠 Review Sentiment Predictor
+## Review Sentiment Predictor
 
-This project uses a trained machine learning model to predict whether a user review is **positive** or **negative**. Ideal for integrating into websites, apps, or platforms to display filtered, high-quality reviews.
+Streamlit app that predicts review sentiment using an LSTM trained on the IMDB dataset.
 
----
+### Run (minimum)
 
-## 🔍 Features
+```powershell
+cd C:\Users\Vashishth\Desktop\Review-Prediction
+.\run.ps1
+```
 
-- Predicts sentiment (Positive / Negative) from user reviews
-- Uses a trained LSTM model (`lstm_model.h5`)
-- Simple UI to input reviews and view predictions
-- Built for easy integration into any project
+Open `http://localhost:8501`.
 
----
+### Manual run (if you prefer)
 
-# ⚠️ Note
+```powershell
+cd C:\Users\Vashishth\Desktop\Review-Prediction
+python -m venv .venv
+.\.venv\Scripts\pip install -r requirements.txt
+.\.venv\Scripts\python train_model.py
+.\.venv\Scripts\python -m streamlit run app.py
+```
 
-This model is meant for basic sentiment analysis. For production-grade use, improvements such as retraining with a larger dataset, validation, and bias checks are recommended.
+### Evaluate model quickly
+
+```powershell
+.\.venv\Scripts\python evaluate.py
+```
+
+### Troubleshooting
+
+- If you see “Missing artifacts”, run `python train_model.py` (it creates `artifacts/model.h5` + `artifacts/meta.json`).  
+- If port 8501 is busy, stop the other Streamlit process or run `streamlit run app.py --server.port 8502`.
 
 

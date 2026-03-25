@@ -1,0 +1,23 @@
+{
+  "max_features": 10000,
+  "maxlen": 500,
+  "threshold": 0.25,
+  "model_format": "h5",
+  "train": {
+    "epochs_ran": 4,
+    "best_val_loss": 0.29201993346214294
+  },
+  "test": {
+    "threshold": 0.25,
+    "accuracy": 0.87464,
+    "precision": 0.859843245735362,
+    "recall": 0.8952,
+    "f1": 0.8771654777769068,
+    "confusion_matrix": {
+      "tp": 11190,
+      "tn": 10676,
+      "fp": 1824,
+      "fn": 1310
+    }
+  }
+}
